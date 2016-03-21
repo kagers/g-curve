@@ -4,13 +4,13 @@ from draw import *
 
 def parse_file( fname, points, transform, screen, color ):
     f = open(fname)
-    cmds = f.readlines()
+    r = f.read()
+    cmds = r.split('\n')
     f.close()
-    '''hazmat = new_matrix()
-    ident(hazmat)
-    '''i = 0
+    i = 0
     
-    while i<len(lines):
+    while i<len(cmds):
+        print cmds[i]
         if cmds[i] == 'display':
             draw_lines(points, screen, color)
             display(screen)
@@ -45,14 +45,23 @@ def parse_file( fname, points, transform, screen, color ):
                 matrix_mult(new,transform)
             elif cmd == 'circle':
                 add_circle(points,int(args[0]),int(args[1]),0,
-                           int(args[2]),0.0001)
+                           int(args[2]),10000)
             elif cmd == 'hermite':
-                #add_curve()
+                add_curve(points,int(args[0]),int(args[1]),
+                          int(args[2]),int(args[3]),
+                          int(args[4]),int(args[5]),
+                          int(args[6]),int(args[7]),
+                          10000,1)
             elif cmd == 'bezier':
-                #add_curve()
+                add_curve(points,int(args[0]),int(args[1]),
+                          int(args[2]),int(args[3]),
+                          int(args[4]),int(args[5]),
+                          int(args[6]),int(args[7]),
+                          10000,2)
             elif cmd == 'save':
                 draw_lines(points,screen,color)
                 save_ppm(screen,args[0])
+                save_extension(screen,args[0])
             else:
-                print 'why'
+                print 'why '+cmd
         i+=1

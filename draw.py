@@ -1,6 +1,7 @@
 from display import *
 from matrix import *
-import math
+from math import sin, cos, radians
+PI = math.pi
 
 def add_circle( points, cx, cy, cz, r, step ):
     t = 0
@@ -15,7 +16,21 @@ def add_circle( points, cx, cy, cz, r, step ):
         t+=1.0/step
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-    pass
+    if curve_type == 2:
+        xc = generate_curve_coefs(x0,x1,x2,x3,curve_type)
+        yc = generate_curve_coefs(y0,y1,y2,y3,curve_type)
+    elif curve_type == 1:
+        xc = generate_curve_coefs(x0,x2,x1-x0,x2-x3,curve_type)
+        yc = generate_curve_coefs(y0,y2,y1-y0,y2-y3,curve_type)
+    t=0.0
+    step = 1.0/step
+    while t<=1:
+        x1 = t*( t*( t*xc[0][0] + xc[0][1] ) + xc[0][2] ) + xc[0][3] 
+        y1 = t*( t*( t*yc[0][0] + yc[0][1] ) + yc[0][2] ) + yc[0][3] 
+        add_edge(points,x0,y0,0,x1,y1,0)
+        x0 = x1
+        y0 = y1
+        t+=step
 
 def draw_lines( matrix, screen, color ):
     if len( matrix ) < 2:
