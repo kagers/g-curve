@@ -10,10 +10,10 @@ def parse_file( fname, points, transform, screen, color ):
     i = 0
     
     while i<len(cmds):
-        print cmds[i]
         if cmds[i] == 'display':
             draw_lines(points, screen, color)
             display(screen)
+            clear_screen(screen)
         elif cmds[i] == 'apply':
             matrix_mult(transform,points)
         elif cmds[i] == 'ident':
@@ -43,16 +43,16 @@ def parse_file( fname, points, transform, screen, color ):
             elif cmd == 'zrotate':
                 new = make_rotZ(int(args[0]))
                 matrix_mult(new,transform)
-            elif cmd == 'circle':
+            elif cmd == 'circle' or cmd == 'c':
                 add_circle(points,int(args[0]),int(args[1]),0,
                            int(args[2]),10000)
-            elif cmd == 'hermite':
+            elif cmd == 'hermite' or cmd == 'h':
                 add_curve(points,int(args[0]),int(args[1]),
                           int(args[2]),int(args[3]),
                           int(args[4]),int(args[5]),
                           int(args[6]),int(args[7]),
                           10000,1)
-            elif cmd == 'bezier':
+            elif cmd == 'bezier' or cmd == 'b':
                 add_curve(points,int(args[0]),int(args[1]),
                           int(args[2]),int(args[3]),
                           int(args[4]),int(args[5]),
@@ -61,7 +61,6 @@ def parse_file( fname, points, transform, screen, color ):
             elif cmd == 'save':
                 draw_lines(points,screen,color)
                 save_ppm(screen,args[0])
-                save_extension(screen,args[0])
             else:
                 print 'why '+cmd
         i+=1
